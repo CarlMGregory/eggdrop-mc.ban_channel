@@ -1,5 +1,5 @@
 ##
-# Ban Channel v3.0
+# Ban Channel v3.0.1
 #  by MC_8 - Carl M. Gregory <mc8@purehype.net>
 #  This script will only run on eggdrop 1.6.14 or greater.
 #
@@ -320,7 +320,7 @@ set mc_banc(:config:excessive_warnings_command_set) {
 # file. Where and what do you want to call that file?
 set mc_banc(:config:datafile) "./.badc.data"
 
-## SVS Client (Script Version Service) v4.1.2 ##
+## SVS Client (Script Version Service) v4.1.3 ##
 # Once a day, the SVS Client will connect to MC_8's SVS Server to determine if
 # there is a newer version of this script available.  If a newer version is
 # found, the script will be auto updated.
@@ -348,6 +348,15 @@ foreach temp(bind) [binds mc:banc:*] {
   catch {unbind $temp(1) $temp(2) $temp(3) $temp(5)}
 }
 
+foreach temp(bind) [binds mc:bc:*] {
+  foreach {temp(1) temp(2) temp(3) temp(4) temp(5)} $temp(bind) break
+  catch {unbind $temp(1) $temp(2) $temp(3) $temp(5)}
+}
+
+foreach temp(command) [info commands mc:bc:*] {
+  rename $temp(command) ""
+}
+
 set mc_banc(info:vars) ""
 foreach {temp(name) temp(value)} [array get mc_banc :config:*] {
   lappend mc_banc(info:vars) [list $temp(name) $temp(value)]
@@ -355,9 +364,9 @@ foreach {temp(name) temp(value)} [array get mc_banc :config:*] {
 set mc_banc(info:loc) [info script]
 array set mc_banc [list \
   script                 "Ban Channel" \
-  version                "v3.0" \
+  version                "v3.0.1" \
   svs:script             "banchan" \
-  svs:version            "003000000000" \
+  svs:version            "003000001000" \
   svs:client_version     "v4.1.2" \
   svs:client_svs_version "004001002000" \
   svs:server             "mc.svs.purehype.net" \
@@ -1772,6 +1781,12 @@ putloglev o * "$mc_banc(script) $mc_banc(version) by MC_8 loaded."
 ##
 # History  ( <Fixed by> - [Found by] - <Info> )
 ##
+# v3.0.1 (11.24.03)
+#  MC_8 - - Having script clean mc:bc* bind's.  It already clears mc:banc*
+#           binds, but mc:bc* was used like back in v1.0.  ECS error stack
+#           reports as such:
+#             wrong # args: should be "mc:bc:nick_ nick uhost hand chan newnick"
+#
 # v3.0 (11.24.03)
 #  Beta tested by: aw, Moonster
 #  MC_8 -       - Upgraded ECS.  v3.0 -> v4.1
