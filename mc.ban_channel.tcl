@@ -1,5 +1,5 @@
 ##
-# Ban Channel v3.0.1
+# Ban Channel v3.0.2
 #  by MC_8 - Carl M. Gregory <mc8@purehype.net>
 #  This script will only run on eggdrop 1.6.14 or greater.
 #
@@ -320,7 +320,7 @@ set mc_banc(:config:excessive_warnings_command_set) {
 # file. Where and what do you want to call that file?
 set mc_banc(:config:datafile) "./.badc.data"
 
-## SVS Client (Script Version Service) v4.1.3 ##
+## SVS Client (Script Version Service) v4.1.2 ##
 # Once a day, the SVS Client will connect to MC_8's SVS Server to determine if
 # there is a newer version of this script available.  If a newer version is
 # found, the script will be auto updated.
@@ -364,9 +364,9 @@ foreach {temp(name) temp(value)} [array get mc_banc :config:*] {
 set mc_banc(info:loc) [info script]
 array set mc_banc [list \
   script                 "Ban Channel" \
-  version                "v3.0.1" \
+  version                "v3.0.2" \
   svs:script             "banchan" \
-  svs:version            "003000001000" \
+  svs:version            "003000002000" \
   svs:client_version     "v4.1.2" \
   svs:client_svs_version "004001002000" \
   svs:server             "mc.svs.purehype.net" \
@@ -578,13 +578,13 @@ proc mc:banc:dcc:ban_channels:scan {handle index channel} {
 proc mc:banc:dcc:ban_channels:scan_ {handle index channel} {
   global mc_banc
 
+  set user_scan 0
   if {[onchan $channel]} {
     set nick $channel
     set channel "all"
     set user_scan 1
   } elseif {![validchan $channel]} {
     set channel "all"
-    set user_scan 0
   }
 
   if {![mc:banc:list has_dcc_access $handle $channel ban_channels]} {
@@ -1781,6 +1781,9 @@ putloglev o * "$mc_banc(script) $mc_banc(version) by MC_8 loaded."
 ##
 # History  ( <Fixed by> - [Found by] - <Info> )
 ##
+# v3.0.2 (11.25.03)
+#  MC_8 - ECS - Fixed 'can't read "user_scan": no such variable'.
+#
 # v3.0.1 (11.24.03)
 #  MC_8 - - Having script clean mc:bc* bind's.  It already clears mc:banc*
 #           binds, but mc:bc* was used like back in v1.0.  ECS error stack
