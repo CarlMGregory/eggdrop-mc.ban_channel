@@ -1,5 +1,5 @@
 ##
-# Ban Channel v3.0.2
+# Ban Channel v3.0.3
 #  by MC_8 - Carl M. Gregory <mc8@purehype.net>
 #  This script will only run on eggdrop 1.6.14 or greater.
 #
@@ -295,13 +295,6 @@ set mc_banc(:config:warning_command_set) {
 set mc_banc(:config:excessive_warnings_command_set) {
   /putlog Ban Channel: Found %nick%@%channel% in %banned_channel%, kick/banning.
 
-  # These two /tcl commands are here as a sort of example to show you what /tcl
-  # can do.  Other than that, is pointless considering the next several commands
-  # will have the user kicked and banned from the channel (so no need to deop
-  # really, gonna be gone in a second anyhow).
-  /tcl if {[isop %nick% %channel%]} {/raw MODE %channel% -o %nick%}
-  /tcl if {[isop %nick% %channel%]} {/putlog_d Ban Channel: De opped %nick%.}
-
   /ban %channel% %5 *3 %reason%
   /putlog_d Ban Channel: Banned %nick% on %channel% for 5 minutes.
 
@@ -320,7 +313,7 @@ set mc_banc(:config:excessive_warnings_command_set) {
 # file. Where and what do you want to call that file?
 set mc_banc(:config:datafile) "./.badc.data"
 
-## SVS Client (Script Version Service) v4.1.2 ##
+## SVS Client (Script Version Service) v4.1.3 ##
 # Once a day, the SVS Client will connect to MC_8's SVS Server to determine if
 # there is a newer version of this script available.  If a newer version is
 # found, the script will be auto updated.
@@ -364,11 +357,11 @@ foreach {temp(name) temp(value)} [array get mc_banc :config:*] {
 set mc_banc(info:loc) [info script]
 array set mc_banc [list \
   script                 "Ban Channel" \
-  version                "v3.0.2" \
+  version                "v3.0.3" \
   svs:script             "banchan" \
-  svs:version            "003000002000" \
-  svs:client_version     "v4.1.2" \
-  svs:client_svs_version "004001002000" \
+  svs:version            "003000003000" \
+  svs:client_version     "v4.1.3" \
+  svs:client_svs_version "004001003000" \
   svs:server             "mc.svs.purehype.net" \
   svs:port               "80" \
   svs:get                "/index.tcl"]
@@ -1668,8 +1661,15 @@ proc mc:banc:svs_talk {index text} {
                 [lreplace $temp(vars) $lsearch_index $lsearch_index]
               puts $io [list set mc_banc($name) $item_value]
               if {$type == "\{"} {
+                set level 0
                 while {1} {
-                  if {[regexp -- {\}(?:[; ][; ]*(.*))?} $line -> extra]} {
+                  set level [expr                     \
+                    $level +                          \
+                    ([regexp -all -- {\{} $line] -    \
+                     [regexp -all -- {\}} $line])     \
+                  ]
+                  if {[regexp -- {\}(?:[; ][; ]*(.*))?} $line -> extra] &&
+                      (!$level)} {
                     if {$extra != ""} {
                       puts $io $extra
                     }
@@ -1781,6 +1781,14 @@ putloglev o * "$mc_banc(script) $mc_banc(version) by MC_8 loaded."
 ##
 # History  ( <Fixed by> - [Found by] - <Info> )
 ##
+# v3.0.3 (11.25.03)
+#  MC_8 - zdreantza - Upgraded SVS client.  v4.0.2 -> v4.0.3
+#                     Was failling after tring to replace configuration file
+#                     settings that had a } in it's value.  Would see the } as
+#                     end of configuration value regardless of it's level, it
+#                     now reviews it's recursive level and only ends the value
+#                     at level 0 as it should.
+#
 # v3.0.2 (11.25.03)
 #  MC_8 - ECS - Fixed 'can't read "user_scan": no such variable'.
 #
