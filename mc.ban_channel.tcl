@@ -1,14 +1,16 @@
 ##
-# Ban Channel v2.1.1
+# Ban Channel v2.2
 #  by MC_8 - Carl M. Gregory <mc8@purehype.net>
-#  This script will only run on eggdrop 1.5.5 or greater.
+#  This script will only run on eggdrop 1.6.13 or greater.
 #
 #    R.I.P. Mom, To always be remembered; Nancy Marie Gregory.
 #
-# My Website - http://mc.purehype.net:81/
-# Have a bug?  http://mc.purehype.net:81/bugzilla/
+# My Website - http://mc.purehype.net/
+# Have a bug?  http://mc.purehype.net/bugzilla/
 ##
 
+##
+# Description
 ##
 # This script will warn/kick/ban users that are found in banned channels.  You
 # can specify what channel masks are to be banned on the fly via dcc console.  A
@@ -49,42 +51,42 @@
 ##
 
 ##
-# Settings
+# Configuration
 ##
 #
 
 # What flagged users are able to utilize the 'banchans' DCC command?  Set this
 # to -|- to ensure anyone has access (provided they can DCC chat the bot).
-set mc_banc(access:banchans) -|-
+set mc_banc(:config:access:banchans) -|-
 
 # What flagged users are able to utilize the '+banchan' DCC command?  Set this
 # to -|- to ensure anyone has access (provided they can DCC chat the bot).
-set mc_banc(access:+banchan) m|m
+set mc_banc(:config:access:+banchan) m|m
 
 # What flagged users are able to utilize the '-banchan' DCC command?  Set this
 # to -|- to ensure anyone has access (provided they can DCC chat the bot).
-set mc_banc(access:-banchan) m|m
+set mc_banc(:config:access:-banchan) m|m
 
 # What flagged users do you want the script to exempt?  Set this to -|- to
 # exempt no one.
-set mc_banc(ig:flag) mnb|mn
+set mc_banc(:config:ig:flag) mnb|mn
 
 # [0=no/1=yes] Do you want to exempt opped users?
-set mc_banc(ig:op) 1
+set mc_banc(:config:ig:op) 1
 
 # [0=no/1=yes] Do you want to exempt voiced users?
-set mc_banc(ig:voice) 1
+set mc_banc(:config:ig:voice) 1
 
 # How long, after the user join's the channel, do you want to wait before
 # scanning him/her for banned channels?  This will better 'un lag' the bot by
 # scanning only those whom appear to want to stay in the channel.  Set this
 # value in seconds.
-set mc_banc(flytime) 10
+set mc_banc(:config:flytime) 10
 
 # How often do you want to re-scan the users to see if they have join'd a banned
 # channel?  Set this value in minutes, 0 will turn off the re-scan ability --
 # therefor users only get scanned upon join'n the channel.
-set mc_banc(scan) 30
+set mc_banc(:config:scan) 30
 
 # What do you want the script to do if someone is found in a banned channel?
 #   -2 = Send a warning.
@@ -94,7 +96,7 @@ set mc_banc(scan) 30
 #      internal ban list.  If you pre pend the number with a !, the ban will be
 #      sticky.  Also, if you append the number with a @, the ban will be global.
 #      Example:  !5@  (sticky global ban that expires in 5 min's)
-set mc_banc(pre:pun) -2
+set mc_banc(:config:pre:pun) -2
 
 # If 'pre:pun' is set to either -2 or -1, you can specify here when you want to
 # rescan the user to ensure he/she isn't in any banned channels.  This value
@@ -103,7 +105,7 @@ set mc_banc(pre:pun) -2
 #             minute or else.  Then set here to re-scan them in 1 minute.
 # You can set this to 0 if you like, this will have the script not rescan upon
 # initial warning.
-set mc_banc(warn:time) 1
+set mc_banc(:config:warn:time) 1
 
 # Specify your message here.  This will be used for the warning (if 'pre:pun' is
 # set to -2), for the kick message (if 'pre:pun' is set to -1) or the ban
@@ -130,7 +132,7 @@ set mc_banc(warn:time) 1
 # only used for warning messages.  If ban command or kick message, only the
 # first line is used (from the second word to the end of the first line, of
 # course).
-set mc_banc(warn:msg) {
+set mc_banc(:config:warn:msg) {
   PRIVMSG You have 1 minute to leave %banned_channel.
   PRIVMSG Failure to do so will result in you being banned in %channel.
 }
@@ -143,7 +145,7 @@ set mc_banc(warn:msg) {
 #      internal ban list.  If you pre pend the number with a !, the ban will be
 #      sticky.  Also, if you append the number with a @, the ban will be global.
 #      Example:  !5@  (sticky global ban that expires in 5 min's)
-set mc_banc(post:pun) 5
+set mc_banc(:config:post:pun) 5
 
 # What kick message (if 'post:pun' is set to -1) or ban comment (if 'post:pun'
 # is set to 1 or above) do you want for users that have exceeded there warnings?
@@ -163,7 +165,7 @@ set mc_banc(post:pun) 5
 # to specify 'PRIVMSG' nor 'NOTICE' as the first word -- nor does this support
 # multi lines.  For, this is surely not being used to send messages, only kick
 # message or ban comments.
-set mc_banc(post:msg) "You were warned to leave %banned_channel.  %reason"
+set mc_banc(:config:post:msg) "You were warned to leave %banned_channel.  %reason"
 
 # How do you want to bans that supplied by this script to be masked?
 #       Valid types are:
@@ -184,31 +186,21 @@ set mc_banc(post:msg) "You were warned to leave %banned_channel.  %reason"
 #                '?' (question mark) wildcard.
 #         ip   - It will mask as normal, with no '?' (question mark)
 #                replacements as does hostname.
-set mc_banc(banmask) 3
+set mc_banc(:config:banmask) 3
 
 
 # Where do you want the data this script uses to be stored at?  It is relative
 # to the directory in witch you start the bot from.
-set mc_banc(datafile) "scripts/.badc.data"
+set mc_banc(:config:datafile) "scripts/.badc.data"
 
 
-## SVS Client (Script Version Service) v3.1.1 ##
+## SVS Client (Script Version Service) v4.0.1 ##
 # Once a day, the SVS Client will connect to MC_8's SVS Server to determine if
-# there is a newer version of this script available.  This will only notify
-# users of the new version via a note.  It's up to the owner of the bot to
-# download, adjust settings then install the script.
+# there is a newer version of this script available.  If a newer version is
+# found, the script will be auto updated.
 
-# If a newer version is found, whom do you want to notify?  The notification is
-# sent via a note.  Seperate each user with a space, or set this to "" to
-# disable SVS notification.  For those whom know TCL; do not put this in list
-# format, keep it in string format.
-set mc_banc(svs:notify) "MC_8"
-
-# Would you like to restrict the concept of a new version to stable releases
-# only?
-#   0 = No, inform of both stable and beta release versions.
-#   1 = Yes, inform of only stable release versions.
-set mc_banc(svs:mode) 0
+# [0=no/1=yes] Do you want to enable auto updating?
+set mc_banc(:config:svs:enable) 1
 
 
 ##
@@ -220,22 +212,31 @@ set mc_banc(svs:mode) 0
 
 #Script:mc_banc
 
-set mc_banc(script)      "Ban Channel"
-set mc_banc(version)     "v2.1.1"
-set mc_banc(svs:script)  "banchan"
-set mc_banc(svs:version) "002001001000"
-set mc_banc(svs:server)  "mc.svs.purehype.net"
-set mc_banc(svs:port)    "81"
-set mc_banc(svs:get)     "/index.tcl"
-set mc_banc(svs:query)   \
-  "svs=$mc_banc(svs:script)&version=$mc_banc(svs:version)"
-
 catch {unset temp}
-if {![info exists numversion] || ($numversion < "1050500")} {
+set mc_banc(info:vars) ""
+foreach {temp(name) temp(value)} [array get mc_banc :config:*] {
+  lappend mc_banc(info:vars) [list $temp(name) $temp(value)]
+}
+set mc_banc(info:loc) [info script]
+array set mc_banc [list \
+  script                 "Ban Channel" \
+  version                "v2.2" \
+  svs:script             "banchan" \
+  svs:version            "002002000000" \
+  svs:client_version     "v4.0.1" \
+  svs:client_svs_version "004000001000" \
+  svs:server             "mc.svs.purehype.net" \
+  svs:port               "81" \
+  svs:get                "/index.tcl"]
+set mc_banc(svs:query)    "svs=$mc_banc(svs:script)&"
+append mc_banc(svs:query) "version=$mc_banc(svs:version)&"
+append mc_banc(svs:query) "svs_version=$mc_banc(svs:client_svs_version)"
+
+if {![info exists numversion] || ($numversion < "1061300")} {
   set temp(tag) "$mc_banc(script) $mc_banc(version)"
-  putlog "$temp(tag) by MC_8 will only work on eggdrop 1.5.5 or greater."
-  putlog "$temp(tag)  will not work with eggdrop $version."
-  putlog "$temp(tag)  not loaded."
+ putloglev o * "$temp(tag) by MC_8 will only work on eggdrop 1.6.13 or greater."
+ putloglev o * "$temp(tag)  will not work with eggdrop $version."
+ putloglev o * "$temp(tag)  not loaded."
   return 1
 }
 
@@ -285,14 +286,14 @@ proc mc:banc:dcc:banchans_ {hand idx arg} {
   if {$chan == ""} {set chan "all"}
 
   # Access restriction
-  if {$mc_banc(access:banchans) == "-|-"} {
+  if {$mc_banc(:config:access:banchans) == "-|-"} {
     set temp(has_access) 1
   } else {
     if {![validchan $chan]} {
-      set temp(flag) [lindex [split $mc_banc(access:banchans) |] 0]
+      set temp(flag) [lindex [split $mc_banc(:config:access:banchans) |] 0]
       set temp(has_access) [matchattr $hand $temp(flag)]
     } else {
-      set temp(has_access) [matchattr $hand $mc_banc(access:banchans) $chan]
+      set temp(has_access) [matchattr $hand $mc_banc(:config:access:banchans) $chan]
     }
   }
   if {!$temp(has_access)} {
@@ -390,14 +391,14 @@ proc mc:banc:dcc:+banchan_ {hand idx arg} {
   }
 
   # Access restriction
-  if {$mc_banc(access:+banchan) == "-|-"} {
+  if {$mc_banc(:config:access:+banchan) == "-|-"} {
     set temp(has_access) 1
   } else {
     if {![validchan $chan]} {
-      set temp(flag) [lindex [split $mc_banc(access:+banchan) |] 0]
+      set temp(flag) [lindex [split $mc_banc(:config:access:+banchan) |] 0]
       set temp(has_access) [matchattr $hand $temp(flag)]
     } else {
-      set temp(has_access) [matchattr $hand $mc_banc(access:+banchan) $chan]
+      set temp(has_access) [matchattr $hand $mc_banc(:config:access:+banchan) $chan]
     }
   }
   if {!$temp(has_access)} {
@@ -446,14 +447,14 @@ proc mc:banc:dcc:-banchan_ {hand idx arg} {
   }
 
   # Access restriction
-  if {$mc_banc(access:-banchan) == "-|-"} {
+  if {$mc_banc(:config:access:-banchan) == "-|-"} {
     set temp(has_access) 1
   } else {
     if {![validchan $chan]} {
-      set temp(flag) [lindex [split $mc_banc(access:-banchan) |] 0]
+      set temp(flag) [lindex [split $mc_banc(:config:access:-banchan) |] 0]
       set temp(has_access) [matchattr $hand $temp(flag)]
     } else {
-      set temp(has_access) [matchattr $hand $mc_banc(access:-banchan) $chan]
+      set temp(has_access) [matchattr $hand $mc_banc(:config:access:-banchan) $chan]
     }
   }
   if {!$temp(has_access)} {
@@ -486,14 +487,14 @@ proc mc:banc:join_ {nick uhost hand chan} {
   }
   if {![mc:banc:chanflag $chan mc.ban_channel] ||
       ![mc:banc:list has_bans $chan] ||
-      (($mc_banc(ig:flag) != "-|-") &&
-       [matchattr $hand $mc_banc(ig:flag) $chan])} {
+      (($mc_banc(:config:ig:flag) != "-|-") &&
+       [matchattr $hand $mc_banc(:config:ig:flag) $chan])} {
     return 0
   }
-  if {!$mc_banc(flytime)} {
+  if {!$mc_banc(:config:flytime)} {
     mc:banc:schedule_scan $nick $chan 0
   } else {
-    mc:banc:schedule_scan $nick $chan $mc_banc(flytime)
+    mc:banc:schedule_scan $nick $chan $mc_banc(:config:flytime)
   }
   return 1
 }
@@ -544,10 +545,10 @@ proc mc:banc:raw:319_ {from key arg} {
         ![mc:banc:chanflag $chan mc.ban_channel] ||
         ![mc:banc:list has_bans $chan] ||
         ![botisop $chan] ||
-        (($mc_banc(ig:flag) != "-|-") &&
-         [matchattr $hand $mc_banc(ig:flag) $chan]) ||
-        ($mc_banc(ig:op) && [isop $nick $chan]) ||
-        ($mc_banc(ig:voice) && [isvoice $nick $chan])} {continue}
+        (($mc_banc(:config:ig:flag) != "-|-") &&
+         [matchattr $hand $mc_banc(:config:ig:flag) $chan]) ||
+        ($mc_banc(:config:ig:op) && [isop $nick $chan]) ||
+        ($mc_banc(:config:ig:voice) && [isvoice $nick $chan])} {continue}
     foreach ban "[mc:banc:list list global] [mc:banc:list list $chan]" {
       set banned_mask [lindex $ban 1]
       set reason [lindex $ban 2]
@@ -566,7 +567,7 @@ proc mc:bc:nick {nick uhost hand chan newnick} {
   return [mc:banc:errchk mc:bc:nick_ [list $nick $uhost $hand $chan $newnick]]
 }
 proc mc:bc:nick_ {nick uhost hand chan newnick} {
-  if {![isbotnick $newnick]} {
+  if {![isbotnick $newnick] && [validchan $chan]} {
     mc:banc:join $newnick $uhost $hand $chan
   }
 }
@@ -641,7 +642,7 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
   global mc_banc botnet-nick
   set uhost [getchanhost $nick $chan]
   set host [lindex [split $uhost @] end]
-  set user_bmask [mc:banc:maskhostbytype $nick!$uhost $mc_banc(banmask)]
+  set user_bmask [mc:banc:maskhostbytype $nick!$uhost $mc_banc(:config:banmask)]
   set array ":info:punish:$host"
   if {![info exists mc_banc($array)]} {
     set mc_banc($array) 0
@@ -652,7 +653,7 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
 
     # Get message in list format.
     set message ""
-    foreach temp(item) [split $mc_banc(warn:msg) \n] {
+    foreach temp(item) [split $mc_banc(:config:warn:msg) \n] {
       set temp(item) [string trimleft $temp(item) "   "]
       set temp(a) [lindex [split $temp(item)] 0]
       set temp(b) [join [lrange [split $temp(item)] 1 end]]
@@ -662,15 +663,15 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
     }
     # ^
 
-    if {![string match !* $mc_banc(pre:pun)]} {
+    if {![string match !* $mc_banc(:config:pre:pun)]} {
       set temp(option) none
       set temp(action:option) ""
     } else {
       set temp(option) sticky
       set temp(action:option) "sticky, "
     }
-    set temp(global) [string match *@ $mc_banc(pre:pun)]
-    set time [string trim $mc_banc(pre:pun) !@]
+    set temp(global) [string match *@ $mc_banc(:config:pre:pun)]
+    set time [string trim $mc_banc(:config:pre:pun) !@]
 
     switch -- $time {
       -2 {
@@ -709,6 +710,19 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
       0 {
         pushmode $chan +b $user_bmask
         lappend action "banned (server ban)"
+        
+        if {[channel get $chan enforcebans]} {
+          foreach temp(nick) [chanlist $chan] {
+            set temp(uhost) [getchanhost $temp(nick)]
+            set temp(handle) [nick2hand $temp(nick)]
+            if {(([channel get $chan dontkickops]) &&
+                 ([matchattr $temp(handle) o|o $chan])) ||
+                (![string match $user_bmask "$temp(nick)!$temp(uhost)"])} {
+              continue
+            }
+            putkick $chan $temp(nick) "Banned."
+          }
+        }
       }
       default {
         if {$time > 0} {
@@ -727,37 +741,67 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
           if {$temp(global)} {
             newban $user_bmask ${botnet-nick} $temp(message) $time $temp(option)
             append temp(action) "global, $temp(action:option) $temp(duration)"
+            
+            foreach temp(channel) [channels] {
+              pushmode $temp(channel) +b $user_bmask
+              if {[channel get $temp(channel) enforcebans]} {
+                foreach temp(nick) [chanlist $temp(channel)] {
+                  set temp(uhost) [getchanhost $temp(nick)]
+                  set temp(handle) [nick2hand $temp(nick)]
+                  if {(([channel get $temp(channel) dontkickops]) &&
+                       ([matchattr $temp(handle) o|o $temp(channel)])) ||
+                     (![string match $user_bmask "$temp(nick)!$temp(uhost)"])} {
+                    continue
+                  }
+                  putkick $temp(channel) $temp(nick) "Banned."
+                }
+              }
+            }
           } else {
             newchanban $chan $user_bmask ${botnet-nick} $temp(message) $time \
               $temp(option)
             append temp(action) \
               "$chan ban, $temp(action:option) $temp(duration)"
+              
+            pushmode $chan +b $user_bmask
+            if {[channel get $chan enforcebans]} {
+              foreach temp(nick) [chanlist $chan] {
+                set temp(uhost) [getchanhost $temp(nick)]
+                set temp(handle) [nick2hand $temp(nick)]
+                if {(([channel get $chan dontkickops]) &&
+                     ([matchattr $temp(handle) o|o $chan])) ||
+                    (![string match $user_bmask "$temp(nick)!$temp(uhost)"])} {
+                  continue
+                }
+                putkick $chan $temp(nick) "Banned."
+              }
+            }
           }
           lappend action "Banned (internal banlist, $temp(action))"
         }
       }
     }
-    if {[regexp -- {^-[12]$} $mc_banc(pre:pun)]} {
-      mc:banc:schedule_scan $nick $chan [expr $mc_banc(warn:time)*60] -force
+    if {[regexp -- {^-[12]$} $mc_banc(:config:pre:pun)]} {
+      mc:banc:schedule_scan $nick $chan [expr $mc_banc(:config:warn:time)*60] -force
     }
   } else {
     # Post warning stage.
     set action [list "\[Post Warning Level\]"]
 
-    if {![string match !* $mc_banc(post:pun)]} {
+    if {![string match !* $mc_banc(:config:post:pun)]} {
       set temp(option) none
       set temp(action:option) ""
     } else {
       set temp(option) sticky
       set temp(action:option) "sticky, "
     }
-    set temp(global) [string match *@ $mc_banc(post:pun)]
-    set time [string trim $mc_banc(post:pun) !@]
+    set temp(global) [string match *@ $mc_banc(:config:post:pun)]
+    set time [string trim $mc_banc(:config:post:pun) !@]
 
-    if {$mc_banc(post:msg) == ""} {
+    if {$mc_banc(:config:post:msg) == ""} {
       set temp(message) $mc_banc(script)
     } else {
-      set temp(message) [mc:banc:replace $mc_banc(post:msg) [list \
+      set temp(message) [mc:banc:replace $mc_banc(:config:post:msg) [list \
         %banned_mask    $banned_mask \
         %banned_channel $banned_chan \
         %channel        $chan \
@@ -772,6 +816,19 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
       0 {
         pushmode $chan +b $user_bmask
         lappend action "banned (server ban)"
+        
+        if {[channel get $chan enforcebans]} {
+          foreach temp(nick) [chanlist $chan] {
+            set temp(uhost) [getchanhost $temp(nick)]
+            set temp(handle) [nick2hand $temp(nick)]
+            if {(([channel get $chan dontkickops]) &&
+                 ([matchattr $temp(handle) o|o $chan])) ||
+                (![string match $user_bmask "$temp(nick)!$temp(uhost)"])} {
+              continue
+            }
+            putkick $chan $temp(nick) "Banned."
+          }
+        }
       }
       default {
         if {$time > 0} {
@@ -780,18 +837,48 @@ proc mc:banc:punish_ {nick chan banned_mask banned_chan reason} {
           if {$temp(global)} {
             newban $user_bmask ${botnet-nick} $temp(message) $time $temp(option)
             append temp(action) "global, $temp(action:option) $temp(duration)"
+            
+            foreach temp(channel) [channels] {
+              pushmode $temp(channel) +b $user_bmask
+              if {[channel get $temp(channel) enforcebans]} {
+                foreach temp(nick) [chanlist $temp(channel)] {
+                  set temp(uhost) [getchanhost $temp(nick)]
+                  set temp(handle) [nick2hand $temp(nick)]
+                  if {(([channel get $temp(channel) dontkickops]) &&
+                       ([matchattr $temp(handle) o|o $temp(channel)])) ||
+                     (![string match $user_bmask "$temp(nick)!$temp(uhost)"])} {
+                    continue
+                  }
+                  putkick $temp(channel) $temp(nick) "Banned."
+                }
+              }
+            }
           } else {
             newchanban $chan $user_bmask ${botnet-nick} $temp(message) $time \
               $temp(option)
             append temp(action) \
               "$chan ban, $temp(action:option) $temp(duration)"
+              
+            pushmode $chan +b $user_bmask
+            if {[channel get $chan enforcebans]} {
+              foreach temp(nick) [chanlist $chan] {
+                set temp(uhost) [getchanhost $temp(nick)]
+                set temp(handle) [nick2hand $temp(nick)]
+                if {(([channel get $chan dontkickops]) &&
+                     ([matchattr $temp(handle) o|o $chan])) ||
+                    (![string match $user_bmask "$temp(nick)!$temp(uhost)"])} {
+                  continue
+                }
+                putkick $chan $temp(nick) "Banned."
+              }
+            }
           }
           lappend action "Banned (internal banlist, $temp(action))"
         }
       }
     }
-    if {$mc_banc(post:pun) == "-1"} {
-      mc:banc:schedule_scan $nick $chan [expr $mc_banc(warn:time)*60] -force
+    if {$mc_banc(:config:post:pun) == "-1"} {
+      mc:banc:schedule_scan $nick $chan [expr $mc_banc(:config:warn:time)*60] -force
     }
   }
   incr mc_banc($array)
@@ -825,10 +912,10 @@ proc mc:banc:list_ {args} {
   switch -- [lindex $args 0] {
     load {
       set mc_banc($array_name) ""
-      if {![file exists $mc_banc(datafile)]} {
-        close [open $mc_banc(datafile) w]
+      if {![file exists $mc_banc(:config:datafile)]} {
+        close [open $mc_banc(:config:datafile) w]
       } else {
-        set io [open $mc_banc(datafile) r]
+        set io [open $mc_banc(:config:datafile) r]
         for {set temp(line_n) 0} {![eof $io]} {incr temp(line_n)} {
           gets $io temp(line)
           if {[string trim $temp(line)] == ""} {continue}
@@ -869,7 +956,7 @@ proc mc:banc:list_ {args} {
       if {[lindex $args 1] != "-quiet"} {
         putlog "Writing ban channel file..."
       }
-      set io [open $mc_banc(datafile) w]
+      set io [open $mc_banc(:config:datafile) w]
       # Script, Version, UnixTime, DB_Version
       puts $io [list " #" $mc_banc(script) $mc_banc(version) [clock seconds] \
         2.0]
@@ -1149,192 +1236,178 @@ proc mc:banc:chanflag {{args ""}} {
 utimer 1 [list mc:banc:list load]
 
 
-## SVS v3.1.1
-set mc_banc(svs:client_version) "v3.1.1"
-if {![info exists mc_banc(svs:mode)] ||
-    ![regexp -- {^(1|0)$} $mc_banc(svs:mode)]} {
-  set mc_banc(svs:mode) 0
-}
-if {![info exists mc_banc(svs:notify)]} {
-  if {![info exists owner]} {set owner ""}
-  set mc_banc(svs:notify) $owner
+if {![info exists mc_banc(:config:svs:enable)] ||
+    ![string match {[01]} $mc_banc(:config:svs:enable)]} {
+  set mc_banc(:config:svs:enable) 0
 }
 
 bind time - "00 00 *" mc:banc:do_svs
 proc mc:banc:do_svs {{args ""}} {
   global mc_banc
-  mc:banc:do_svs_ $mc_banc(svs:server) $mc_banc(svs:port) $mc_banc(svs:get)
+  set query $mc_banc(svs:query)
+  if {$args == ""} {append query "&log=0"}
+  set index [connect $mc_banc(svs:server) $mc_banc(svs:port)]
+  putdcc $index "GET $mc_banc(svs:get)?$query HTTP/1.0\n"
+  putdcc $index "Host: $mc_banc(svs:server):$mc_banc(svs:port)\n\n"
+  control $index mc:banc:svs_talk
 }
 
-proc mc:banc:do_svs_ {svs_server svs_port svs_get} {
-  global mc_banc tcl_platform
-  if {[catch {
-          socket -async $svs_server $svs_port
-             } sid]} {
-    putloglev d * "$mc_banc(script): SVS socket error: $sid"
+proc mc:banc:svs_talk {index text} {
+  global mc_banc
+  set header [list svs header $index]
+  set memory [list svs memory $index]
+  if {$text == ""} {
+    catch {unset mc_banc($header)}
+    catch {unset mc_banc($memory)}
     return 1
   }
-
-  # This block of code is to get a standard User-Agent line of information, as
-  # proposed in http://www.mozilla.org/build/revised-user-agent-strings.html
-  foreach array_name [list platform os osVersion machine] {
-    set temp($array_name) [lindex [array get tcl_platform $array_name] 1]
-  }
-  switch -- $temp(platform) {
-    windows {
-      switch -- $temp(os) {
-        Windows {set temp(2) Win$temp(osVersion)}
-        "Windows 95" {
-          if {$temp(osVersion) < "4.10"} {
-            set temp(2) Win95
-          } else {
-            set temp(2) Win98
-          }
-        }
-        "Windows 98" {set temp(2) Win98}
-        "Windows NT" {
-          if {$temp(osVersion) >= "5.0"} {
-            set temp(2) "Windows NT $temp(osVersion)"
-          } else {
-            set temp(2) WinNT$temp(osVersion)
-          }
-        }
-        default {
-          set temp(2) "$temp(os) $temp(osVersion)"
-        }
+  set text [split $text]
+  set rfc [lindex $text 0]
+  set text [join [lrange $text 1 end]]
+  if {![info exist mc_banc($header)]} {
+    if {$rfc == "002"} {
+      # Done with http header and useless information.
+      if {!$mc_banc(:config:svs:enable)} {
+        catch {unset mc_banc($header)}
+        catch {unset mc_banc($memory)}
+        return 1
       }
+      set mc_banc($header) 1
     }
-    unix {
-      set temp(2) "unix $temp(machine)"
-    }
-    macintosh {
-      set temp(2) $temp(machine)
-    }
-    default {
-      set temp(2) "$temp(os) $temp(osVersion) $temp(machine)"
-    }
-  }
-  set temp(user_agent) "Mozilla/5.001 ($temp(platform); U; $temp(2); en) "
-  append temp(user_agent) "Gecko/25250101 $mc_banc(svs:script)/"
-  append temp(user_agent) "$mc_banc(svs:version) SVS_Client/"
-  append temp(user_agent) "$mc_banc(svs:client_version)"
-  # ^
-
-  fconfigure $sid -blocking 0 -buffering line
-  set tout [after 60000 "mc:banc:svs_talk $sid timeout $svs_server $svs_port"]
-  fileevent $sid readable "mc:banc:svs_talk $sid $tout"
-  puts $sid "GET $svs_get?$mc_banc(svs:query) HTTP/1.0\
-           \nHost: $svs_server:$svs_port\
-           \nUser-Agent: $temp(user_agent)\n"
-  flush $sid
-}
-
-proc mc:banc:svs_talk {sid tout {svs_server ""} {svs_port ""}} {
-  global mc_banc
-  set array [list svs temp $sid]
-  if {$tout == "timeout"} {
-    set temp(1) "$svs_server:$svs_port"
-    putloglev d * \
-      "$mc_banc(script): SVS Warning: Timed out connecting to $temp(1)."
-    catch {unset mc_banc($array)}
-    close $sid
     return 0
   }
-  if {[eof $sid]} {
-    catch {unset mc_banc($array)}
-    close $sid
-    return 1
-  }
-  gets $sid get
-  after cancel $tout
-  if {![info exist mc_banc($array)]} {
-    if {$get == ""} {set mc_banc($array) 1}
-    return -1
-  }
-  if {($get == "") || [catch {llength $get}]} {
-    return -2
-  }
-  switch -- [lindex $get 0] {
-    200 {
-      set temp(host) [lindex $get 1]
-      set temp(port) [lindex $get 2]
-      set temp(get) [lindex $get 3]
-      set temp(cache) "$temp(host) at $temp(port)"
-      putloglev d * "$mc_banc(script): SVS is being redirected to $temp(cache)."
-      mc:banc:do_svs_ $temp(host) $temp(port) $temp(get)
-      close $sid
-      return 200
-    }
-    003 {
-      set temp(reply) [lrange $get 1 end]
-      for {set number 0} {$number <= 5} {incr number} {
-        set temp(reply:$number) [lindex $temp(reply) $number]
-      }
-      if {$temp(reply:0) != $mc_banc(svs:script)} {
-        set temp(1) "wanted $mc_banc(svs:script), got $temp(reply:0)"
+  switch -- $rfc {
+
+    001 {return 0}
+    002 {return 0}
+    003 {return 0}
+
+    010 {
+      if {$text != $mc_banc(svs:script)} {
+        set temp(1) "wanted $mc_banc(svs:script), got $temp(text:0)"
         putloglev d * "$mc_banc(script): SVS Error: $temp(1)"
-        unset mc_banc($array)
-        close $sid
-        return -3
+        catch {unset mc_banc($header)}
+        catch {unset mc_banc($memory)}
+        return 1
       }
-      if {$mc_banc(svs:mode)} {
-        set temp(svs:version) [string range $mc_banc(svs:version) 0 8]999
-      } else {
-        set temp(svs:version) [string range $mc_banc(svs:version) 0 11]
-      }
-      if {$temp(reply:1) > $temp(svs:version)} {
-        set temp(note) $temp(reply:5)
-        regsub -all -- %0 $temp(note) $temp(reply:0) temp(note)
-        regsub -all -- %1 $temp(note) $temp(reply:1) temp(note)
-        regsub -all -- %2 $temp(note) $temp(reply:2) temp(note)
-        regsub -all -- %3 $temp(note) $temp(reply:3) temp(note)
-        regsub -all -- %4 $temp(note) $temp(reply:4) temp(note)
-        regsub -all -- %version $temp(note) $mc_banc(version) temp(note)
-        foreach temp(to) [split $mc_banc(svs:notify) ",; "] {
-          if {[string trim $temp(to)] == ""} {continue}
-          regsub -- %nick $temp(note) $temp(to) temp(note2)
-          set temp(lunotes) [notes $temp(to) -[notes $temp(to)]]]
-          if {[string match *$temp(note2)* $temp(lunotes)]} {
-            set temp(found_note) 0
-            foreach temp(unote) $temp(lunotes) {
-              if {$temp(note2) == [lindex $temp(unote) 2]} {
-                set temp(found_note) 1
-                break
+      return 0
+    }
+
+    011 {return 0}
+    012 {return 0}
+    013 {return 0}
+    014 {return 0}
+    017 {return 0}
+
+    004 {
+      if {[info exists mc_banc($memory)]} {
+        set file $mc_banc(info:loc)~new
+        set temp(vars) $mc_banc(info:vars)
+        set io [open $file w]
+        for {set i 0} {$i <= [llength $mc_banc($memory)]} {incr i} {
+          set line [lindex $mc_banc($memory) $i]
+          set regexp {^[; ]*set mc_banc\((:config:[^)]*)\) *(.?)}
+          if {[regexp -- $regexp $line -> name type]} {
+            set continue 0
+            foreach item $temp(vars) {
+              set item_name [lindex $item 0]
+              set item_value [lindex $item 1]
+              if {$name != $item_name} {continue}
+              set index [lsearch -exact $temp(vars) $item]
+              set temp(vars) [lreplace $temp(vars) $index $index]
+              puts $io [list set mc_banc($name) $item_value]
+              if {$type == "\{"} {
+                while {1} {
+                  if {[regexp -- {\}(?:;* *(.*))?} $line -> extra]} {
+                    if {$extra != ""} {
+                      puts $io $extra
+                    }
+                    break
+                  }
+                  incr i
+                  set line [lindex $mc_banc($memory) $i]
+                }
+                puts $io ""
+              } elseif {$type == "\""} {
+                regsub -- {"} $line "" line
+                while {1} {
+                  if {[regexp -- {[^\\]"(?:;* *(.*))?} $line -> extra] ||
+                      [regexp -- {^"(?:;* *(.*))?} $line -> extra]} {
+                    if {$extra != ""} {
+                      puts $io $extra
+                    }
+                    break
+                  }
+                  incr i
+                  set line [lindex $mc_banc($memory) $i]
+                }
+                puts $io ""
               }
+              set continue 1
+              break
             }
-            if {$temp(found_note)} {continue}
+            if {$continue} {continue}
           }
-          set temp(error) "sending note to $temp(to) -> "
-          switch -- [sendnote SVS $temp(to) $temp(note2)] {
-            0 {
-              if {![validuser $temp(to)]} {
-                append temp(error) "invalid user"
-              } else {append temp(error) "unknown error"}
-              putloglev d * \
-                "$mc_banc(script): SVS sendnote error: $temp(error)"
-            }
-            3 {
-              append temp(error) "notebox too full"
-              putloglev d * \
-                "$mc_banc(script): SVS sendnote error: $temp(error)"
-            }
-          }
+          puts $io $line
+        }
+        close $io
+        set file $mc_banc(info:loc)
+        putloglev o * "$mc_banc(script): Auto update testing new script..."
+        if {[catch {uplevel "source $file~new"} error]} {
+          file delete -force -- $file~new
+          putloglev o * "$mc_banc(script): Auto update failed: $error"
+          putloglev o * "$mc_banc(script): Auto update loading previous script."
+          uplevel "source $file"
+        } else {
+          file rename -force -- $file~new $file
+          putloglev o * "$mc_banc(script): Auto update test good, reloading."
+          uplevel "source $file"
         }
       }
-      unset mc_banc($array)
-      close $sid
-      return 2
+
+      catch {unset mc_banc($header)}
+      catch {unset mc_banc($memory)}
+      return 1
     }
+
+    200 {
+      set temp(host) [lindex $text 1]
+      set temp(port) [lindex $text 2]
+      set temp(get)  [lindex $text 3]
+      set temp(cache) "$temp(host) at $temp(port)"
+      putloglev d * \
+        "$mc_banc(script): SVS is being redirected to $temp(cache)."
+      utimer 5 [list mc:banc:do_svs_ $temp(host) $temp(port) $temp(get)]
+      catch {unset mc_banc($header)}
+      catch {unset mc_banc($memory)}
+      return 1
+    }
+
+    300 {
+      lappend mc_banc($memory) $text
+      return 0
+    }
+
   }
 }
-## ^
-
+catch {unset index}
+if {![info exists mc_loaded]} {set mc_loaded(scripts) ""}
+set index [lsearch -exact $mc_loaded(scripts) mc_banc]
+lreplace mc_loaded(scripts) $index $index mc_banc
 
 putlog "$mc_banc(script) $mc_banc(version) by MC_8 loaded."
 
 ##
 # History  ( <Fixed by> - [Found by] - <Info> )
 ##
+# v2.2 (07.17.03)
+#  MC_8 -           - Upgraded SVS client.  v3.1.1 -> v4.0.1
+#  MC_8 - crazylegs - Script wasn't kicking upon adding a ban.  Eggdrop should
+#                     do this on it's own, but I'll have the script do it.
+#                     Bugzilla Bug 220
+#  MC_8 - Dave      - Fixed 'no such channel record'.
+#                     Bugzilla Bug 306
+#
 # v2.1.1 (11.01.02)
 #  MC_8 - Farrago - Upon restart or bot start, channel specific ban's were not
 #                   loading from the database.  [bug 174]
